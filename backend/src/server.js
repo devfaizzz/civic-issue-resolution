@@ -9,7 +9,7 @@ const rateLimit = require('express-rate-limit');
 const axios = require('axios');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const MONGO_URI="mongodb+srv://faizk12312fk:Faizk.1@@cluster0.rhk4s.mongodb.net/?retryWrites=true&w=majority"
+const MONGO_URI="mongodb+srv://faizk12312fk:Faizk.1%40@cluster0.rhk4s.mongodb.net/?retryWrites=true&w=majority"
 require('dotenv').config();
 
 // Import routes
