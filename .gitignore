@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables (IMPORTANT - Don't push API keys!)
+.env
+.env.local
+.env.production
+
+# Uploads
+uploads/
+*.jpg
+*.png
+*.jpeg
+*.gif
+*.webp
+*.mp3
+*.wav
+*.mp4
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build
+dist/
+build/

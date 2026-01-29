@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic Issue Tracker - Admin Dashboard</title>
+    
+    <!-- Tailwind via local proxy to avoid CDN issues -->
+    <script src="/assets/tailwind.js"></script>
+    
+    <!-- Google Maps API -->
+    <!-- Note: Replace YOUR_API_KEY with your actual Google Maps API key -->
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        #adminMap { height: 500px; width: 100%; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+        <aside class="w-64 bg-gray-800 text-white">
+            <div class="p-4">
+                <h1 class="text-2xl font-bold mb-8">Admin Panel</h1>
+                <nav>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#dashboard" class="block p-3 hover:bg-gray-700 rounded transition">
+                                📊 Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#issues" class="block p-3 hover:bg-gray-700 rounded transition">
+                                🎯 Issues
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#map-view" class="block p-3 hover:bg-gray-700 rounded transition">
+                                🗺️ Map View
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#departments" class="block p-3 hover:bg-gray-700 rounded transition">
+                                🏢 Departments
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#analytics" class="block p-3 hover:bg-gray-700 rounded transition">
+                                📈 Analytics
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#reports" class="block p-3 hover:bg-gray-700 rounded transition">
+                                📄 Reports
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#settings" class="block p-3 hover:bg-gray-700 rounded transition">
+                                ⚙️ Settings
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="bg-white shadow-md p-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold text-gray-800">Dashboard Overview</h2>
+                    <div class="flex items-center space-x-4">
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            Export Report
+                        </button>
+                        <span class="text-gray-600">Admin User</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="p-6">
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Total Issues</p>
+                                <p class="text-3xl font-bold text-gray-800">1,234</p>
+                                <p class="text-green-500 text-sm">↑ 12% from last month</p>
+                            </div>
+                            <div class="text-blue-500 text-3xl">📋</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Pending Issues</p>
+                                <p class="text-3xl font-bold text-yellow-600">342</p>
+                                <p class="text-red-500 text-sm">↑ 5% from last week</p>
+                            </div>
+                            <div class="text-yellow-500 text-3xl">⏳</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Resolved Today</p>
+                                <p class="text-3xl font-bold text-green-600">28</p>
+                                <p class="text-green-500 text-sm">↑ 18% from yesterday</p>
+                            </div>
+                            <div class="text-green-500 text-3xl">✅</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Avg Resolution Time</p>
+                                <p class="text-3xl font-bold text-gray-800">3.2d</p>
+                                <p class="text-green-500 text-sm">↓ 0.5d improvement</p>
+                            </div>
+                            <div class="text-purple-500 text-3xl">⏱️</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issues Table & Filters -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="p-4 border-b">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold">Recent Issues</h3>
+                            <div class="flex space-x-2">
+                                <select class="border rounded px-3 py-1">
+                                    <option>All Categories</option>
+                                    <option>Pothole</option>
+                                    <option>Street Light</option>
+                                    <option>Garbage</option>
+                                    <option>Water Supply</option>
+                                </select>
+                                <select class="border rounded px-3 py-1">
+                                    <option>All Status</option>
+                                    <option>New</option>
+                                    <option>In Progress</option>
+                                    <option>Resolved</option>
+                                </select>
+                                <select class="border rounded px-3 py-1">
+                                    <option>Priority</option>
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned To</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="issuesTableBody">
+                                <!-- Dynamic content will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Map View -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="p-4 border-b">
+                        <h3 class="text-lg font-semibold">Live Issue Map</h3>
+                    </div>
+                    <div id="adminMap"></div>
+                </div>
+
+                <!-- Analytics Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Issues by Category</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resolution Trend</h3>
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Department Performance -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="p-4 border-b">
+                        <h3 class="text-lg font-semibold">Department Performance</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-gray-600">Public Works</span>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-48 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 78%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">78% resolved</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-gray-600">Sanitation</span>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-48 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 65%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">65% resolved</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-gray-600">Electrical</span>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-48 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 82%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">82% resolved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Issue Detail Modal -->
+    <div id="issueModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-2xl w-full max-h-screen overflow-y-auto">
+            <h3 class="text-xl font-semibold mb-4">Issue Details</h3>
+            <div id="issueModalContent">
+                <!-- Dynamic content -->
+            </div>
+            <div class="mt-4 flex justify-end space-x-2">
+                <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Close</button>
+                <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Update Status</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwBbQyUgHCh6mK9xk2vmG-f-Y_yqkQ_bk&callback=initAdminMap" async defer></script>
+    
+    <!-- Admin Panel JavaScript -->
+    <script src="js/admin.js"></script>
+</body>
+</html>
