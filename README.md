@@ -1,4 +1,4 @@
-# Civic Issue Tracker
+# Logic Lords + 'YUKTI'
 
 A crowdsourced civic issue reporting and resolution system featuring a citizen-facing PWA and an admin dashboard for municipal staff.
 
